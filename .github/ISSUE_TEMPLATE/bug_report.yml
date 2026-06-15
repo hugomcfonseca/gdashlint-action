@@ -1,0 +1,48 @@
+name: Bug report
+description: Report a reproducible problem with the GitHub Action
+title: "bug: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please provide enough detail for maintainers to reproduce it.
+  - type: input
+    id: action-version
+    attributes:
+      label: gdashlint-action version
+      description: The action ref used in your workflow.
+      placeholder: v0.2.0
+    validations:
+      required: true
+  - type: input
+    id: gdashlint-version
+    attributes:
+      label: gdashlint version
+      description: The `version` input used by the action, if set.
+      placeholder: v0.2.0
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Workflow snippet
+      description: Include the relevant action step and runner OS.
+      render: yaml
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      render: text
