@@ -1,0 +1,83 @@
+name: gdashlint
+description: Lint Grafana dashboard JSON files with gdashlint.
+author: Hugo Fonseca
+
+branding:
+  icon: check-circle
+  color: blue
+
+inputs:
+  command:
+    description: gdashlint command to run. One of lint, fix, or rules.
+    required: false
+    default: lint
+  paths:
+    description: Newline-separated dashboard files or directories to lint or fix.
+    required: false
+    default: .
+  config:
+    description: Optional path to a gdashlint YAML configuration file.
+    required: false
+    default: ""
+  format:
+    description: Output format. Use github for GitHub Actions annotations.
+    required: false
+    default: github
+  fail-on:
+    description: Minimum severity that fails the action. One of error, warning, info, or none.
+    required: false
+    default: ""
+  sort:
+    description: Sort mode. One of severity or file.
+    required: false
+    default: ""
+  dry-run:
+    description: Preview fix remediations without writing files. Used only with command=fix.
+    required: false
+    default: "false"
+  mode:
+    description: Fix write mode. One of in-place or copy. Used only with command=fix.
+    required: false
+    default: in-place
+  suffix:
+    description: Suffix used before the extension in copy mode. Used only with command=fix.
+    required: false
+    default: .fixed
+  version:
+    description: gdashlint release tag to run. Pin to a release tag such as v0.2.0 for reproducibility.
+    required: false
+    default: latest
+  distribution:
+    description: How to run gdashlint. Use binary to download GitHub release assets, or docker for the container image.
+    required: false
+    default: binary
+  image:
+    description: Container image repository to run when distribution=docker.
+    required: false
+    default: docker.io/hugomcfonseca/gdashlint
+  github-token:
+    description: GitHub token used to resolve latest releases. Defaults to the workflow token.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Run gdashlint
+      shell: bash
+      env:
+        INPUT_COMMAND: ${{ inputs.command }}
+        INPUT_PATHS: ${{ inputs.paths }}
+        INPUT_CONFIG: ${{ inputs.config }}
+        INPUT_FORMAT: ${{ inputs.format }}
+        INPUT_FAIL_ON: ${{ inputs.fail-on }}
+        INPUT_SORT: ${{ inputs.sort }}
+        INPUT_DRY_RUN: ${{ inputs.dry-run }}
+        INPUT_MODE: ${{ inputs.mode }}
+        INPUT_SUFFIX: ${{ inputs.suffix }}
+        INPUT_VERSION: ${{ inputs.version }}
+        INPUT_DISTRIBUTION: ${{ inputs.distribution }}
+        INPUT_IMAGE: ${{ inputs.image }}
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
+        DEFAULT_GITHUB_TOKEN: ${{ github.token }}
+      run: ${{ github.action_path }}/scripts/run-gdashlint.sh
